@@ -76,21 +76,40 @@ class Login extends StatelessWidget {
                     autocorrect: true,
                     autofocus: true,
                   ),
-                  Text('Height'),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Feet'),
+                    decoration: InputDecoration(labelText: 'Height (in)'),
                     keyboardType: TextInputType.number,
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(RegExp(r'[\D]')),
                     ],
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Inches'),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r'[\D]')),
+                  // Implement unit converter
+                  Row(
+                    children: [
+                      Container(
+                        child: ButtonBar(
+                          children: [
+                            FlatButton(
+                              child: Text(
+                                'Clear',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {},
+                            ),
+                            RaisedButton(
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        margin: EdgeInsets.all(15),
+                      ),
                     ],
-                  ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  )
                 ],
               ),
             )
