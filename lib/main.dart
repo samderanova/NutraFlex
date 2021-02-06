@@ -14,14 +14,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Welcome(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class Welcome extends StatelessWidget {
   final title;
-  MyHomePage({this.title});
+  Welcome({this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class MyHomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Login()),
+                    MaterialPageRoute(builder: (context) => RegisterOrLogin()),
                   );
                 },
               ),
@@ -55,7 +55,12 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-class Login extends StatelessWidget {
+class RegisterOrLogin extends StatefulWidget {
+  @override
+  _RegisterOrLoginState createState() => _RegisterOrLoginState();
+}
+
+class _RegisterOrLoginState extends State<RegisterOrLogin> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,11 +68,27 @@ class Login extends StatelessWidget {
         body: Column(
           children: [
             Center(
-              child: Text('Enter your information'),
+              child: Text(
+                'Register',
+                style: TextStyle(fontSize: 30),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Already have an account? Click here',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
             ),
             Form(
               child: Column(
                 children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                    ),
+                  ),
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Weight (lbs)',
@@ -101,7 +122,14 @@ class Login extends StatelessWidget {
                                 'Submit',
                                 style: TextStyle(fontSize: 20),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Home(),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -117,6 +145,55 @@ class Login extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
         ),
+      ),
+    );
+  }
+}
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _selectedIndex = 1;
+
+  static const _widgets = [
+    Text('Workouts'),
+    Text('Home Page'),
+    Text('Nutrition'),
+  ];
+
+  void _tap(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: _widgets[_selectedIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fitness_center),
+            label: 'Workouts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dinner_dining),
+            label: 'Nutrition',
+          )
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _tap,
       ),
     );
   }
