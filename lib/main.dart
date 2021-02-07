@@ -159,6 +159,13 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 1;
 
   static const _widgets = [
+    /* 
+    We'll eventually replace these widges with
+    Workouts()
+    Home()    
+    Nutrition()
+    respectively.
+    */
     Text('Workouts'),
     Text('Home Page'),
     Text('Nutrition'),
