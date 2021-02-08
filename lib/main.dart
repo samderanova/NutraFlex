@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import './widgets/form.dart';
+
+
+/*
+NOTE!!!!
+
+Just a reminder, if you want to convert a widget from stateless to stateful,
+you can put your cursor directly over the word "StatelessWidget" or 
+"StatefulWidget", press ctrl + '.', and click "Convert to ____".
+
+*/
 
 void main() {
   runApp(MyApp());
@@ -81,66 +91,9 @@ class _RegisterOrLoginState extends State<RegisterOrLogin> {
                 ),
               ),
             ),
-            Form(
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                    ),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Weight (lbs)',
-                    ),
-                    keyboardType: TextInputType.number,
-                    autocorrect: true,
-                    autofocus: true,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Height (in)'),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r'[\D]')),
-                    ],
-                  ),
-                  // Implement unit converter
-                  Row(
-                    children: [
-                      Container(
-                        child: ButtonBar(
-                          children: [
-                            FlatButton(
-                              child: Text(
-                                'Clear',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              onPressed: () {},
-                            ),
-                            RaisedButton(
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Home(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                        margin: EdgeInsets.all(15),
-                      ),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  )
-                ],
-              ),
-            )
+
+            // Input form for user
+            CustomForm(),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
