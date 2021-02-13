@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
+  final String name;
+  HomePage(this.name);
+
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Text('Welcome ${widget.name}'),
+    );
   }
 }

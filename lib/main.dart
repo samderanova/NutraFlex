@@ -1,12 +1,16 @@
+import 'dart:async';
+import 'package:NutraFlex/widgets/workouts.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './widgets/form.dart';
-
+import './widgets/workouts.dart';
+import './widgets/home.dart';
 
 /*
 NOTE!!!!
 
 Just a reminder, if you want to convert a widget from stateless to stateful,
-you can put your cursor directly over the word "StatelessWidget" or 
+you can click on the word "StatelessWidget" or 
 "StatefulWidget", press ctrl + '.', and click "Convert to ____".
 
 */
@@ -15,24 +19,46 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<SharedPreferences> data = SharedPreferences.getInstance();
+  Future<String> name;
+  String stringName;
+  @override
+  void initState() {
+    super.initState();
+    name = data.then((SharedPreferences prefs) {
+      print(prefs.getString('name'));
+      getName();
+      return (prefs.getString('name') ?? '');
+    });
+  }
+
+  Future getName() async {
+    var stringVersionOfName = await name;
+    setState(() {
+      stringName = stringVersionOfName;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Welcome(title: 'Flutter Demo Home Page'),
+      home: (name.toString() != '') ? Home(name: stringName,) : Welcome(),
     );
   }
 }
 
 class Welcome extends StatelessWidget {
-  final title;
-  Welcome({this.title});
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -87,7 +113,7 @@ class _RegisterOrLoginState extends State<RegisterOrLogin> {
               child: Text(
                 'Already have an account? Click here',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.green,
                 ),
               ),
             ),
@@ -104,6 +130,9 @@ class _RegisterOrLoginState extends State<RegisterOrLogin> {
 }
 
 class Home extends StatefulWidget {
+  final String name;
+  Home({this.name});
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -111,7 +140,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 1;
 
-  static const _widgets = [
+  var _widgets = [
     /* 
     We'll eventually replace these widges with
     Workouts()
@@ -119,8 +148,8 @@ class _HomeState extends State<Home> {
     Nutrition()
     respectively.
     */
-    Text('Workouts'),
-    Text('Home Page'),
+    Workouts(),
+    '',
     Text('Nutrition'),
   ];
 
@@ -132,6 +161,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    _widgets[1] = HomePage(widget.name);
     return Scaffold(
       body: Center(
         child: _widgets[_selectedIndex],
@@ -141,6 +171,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.fitness_center),
             label: 'Workouts',
+            backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

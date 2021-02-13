@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class CustomForm extends StatefulWidget {
@@ -8,8 +8,18 @@ class CustomForm extends StatefulWidget {
 }
 
 class _CustomFormState extends State<CustomForm> {
+  String name = '';
+
+  _setName(String name) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = nameController.text;
+      prefs.setString('name', name);
+      prefs.setBool('registered', true);
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
-  final SecureStorage secureStorage = SecureStorage();
   final nameController = TextEditingController();
   final heightController = TextEditingController();
   final weightController = TextEditingController();
@@ -72,10 +82,7 @@ class _CustomFormState extends State<CustomForm> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
-                          // secureStorage.writeSecureData(
-                           //   'name', nameController.text);
-                          // print(nameController.text);
-
+                          _setName(nameController.text);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
