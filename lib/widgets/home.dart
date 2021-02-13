@@ -12,7 +12,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Welcome ${widget.name}'),
+      body: Column(
+        children: [
+          Center(
+            child: Text('Welcome ${widget.name}'),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+      ),
     );
   }
 }
