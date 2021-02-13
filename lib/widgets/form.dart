@@ -3,6 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class CustomForm extends StatefulWidget {
+  final Future<SharedPreferences> data;
+  CustomForm({this.data});
+
   @override
   _CustomFormState createState() => _CustomFormState();
 }
@@ -10,12 +13,12 @@ class CustomForm extends StatefulWidget {
 class _CustomFormState extends State<CustomForm> {
   String name = '';
 
-  _setName(String name) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  _setName() async {
     setState(() {
       name = nameController.text;
-      prefs.setString('name', name);
-      prefs.setBool('registered', true);
+      widget.data.then((SharedPreferences prefs) {
+        prefs.setString('name', name);
+      });
     });
   }
 
@@ -82,11 +85,11 @@ class _CustomFormState extends State<CustomForm> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
-                          _setName(nameController.text);
+                          _setName();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Home(),
+                              builder: (context) => Home(name: name,),
                             ),
                           );
                         }

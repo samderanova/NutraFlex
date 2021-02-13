@@ -32,7 +32,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     name = data.then((SharedPreferences prefs) {
-      print(prefs.getString('name'));
       getName();
       return (prefs.getString('name') ?? '');
     });
@@ -47,18 +46,28 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    getName();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: (name.toString() != '') ? Home(name: stringName,) : Welcome(),
+      home: (stringName != null)
+          ? Home(
+              name: stringName,
+            )
+          : Welcome(
+              data: data,
+            ),
     );
   }
 }
 
 class Welcome extends StatelessWidget {
+  final Future<SharedPreferences> data;
+  Welcome({this.data});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -77,7 +86,10 @@ class Welcome extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterOrLogin()),
+                    MaterialPageRoute(
+                        builder: (context) => RegisterOrLogin(
+                              data: data,
+                            )),
                   );
                 },
               ),
@@ -92,6 +104,9 @@ class Welcome extends StatelessWidget {
 }
 
 class RegisterOrLogin extends StatefulWidget {
+  final Future<SharedPreferences> data;
+  RegisterOrLogin({this.data});
+
   @override
   _RegisterOrLoginState createState() => _RegisterOrLoginState();
 }
@@ -119,7 +134,9 @@ class _RegisterOrLoginState extends State<RegisterOrLogin> {
             ),
 
             // Input form for user
-            CustomForm(),
+            CustomForm(
+              data: widget.data,
+            ),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
