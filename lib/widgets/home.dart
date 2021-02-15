@@ -1,99 +1,68 @@
 import 'package:flutter/material.dart';
-import '../models/quote.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import './workouts.dart';
+import './homePage.dart';
 
-class HomePage extends StatefulWidget {
+class Home extends StatefulWidget {
   final String name;
-  HomePage(this.name);
+  final Future<SharedPreferences> data;
+  Home(this.name, this.data);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage> {
-  Future futureQuote;
+class _HomeState extends State<Home> {
+  int _selectedIndex = 1;
 
-  @override
-  // Initialize the state by fetching a quote from the API
-  void initState() {
-    super.initState();
-    futureQuote = fetchQuote();
+  var _widgets = [
+    /* 
+    We'll eventually replace these widges with
+    Workouts()
+    Home()    
+    Nutrition()
+    respectively.
+    */
+    Workouts(),
+    '',
+    Text('Nutrition'),
+  ];
+
+  void _tap(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _widgets[1] = HomePage(
+      name: widget.name,
+      data: widget.data,
+    );
     return Scaffold(
-      body: Column(
-        children: [
-          Center(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 50, 10, 20),
-              child: Text(
-                'Hello, ${widget.name}!',
-                style: TextStyle(fontSize: 30),
-              ),
-            ),
+      body: Center(
+        child: _widgets[_selectedIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fitness_center),
+            label: 'Workouts',
+            backgroundColor: Colors.green,
           ),
-
-          // The Future object we got from fetching a quote is "built" here.
-          FutureBuilder(
-              future: futureQuote,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: [
-                      Text(
-                        "An inspirational quote just for you!",
-                        style: TextStyle(fontSize: 20),
-                        textAlign: TextAlign.left,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(15),
-                              child: Text(
-                                snapshot.data.quoteText,
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              '- ${snapshot.data.author}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Center(
-                      child: Text(
-                        snapshot.error.toString().substring(11),
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                return CircularProgressIndicator();
-              })
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dinner_dining),
+            label: 'Nutrition',
+          )
         ],
-        crossAxisAlignment: CrossAxisAlignment.center,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _tap,
       ),
     );
   }

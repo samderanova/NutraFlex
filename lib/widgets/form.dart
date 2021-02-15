@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../main.dart';
+import './home.dart';
 
 class CustomForm extends StatefulWidget {
   final Future<SharedPreferences> data;
@@ -89,7 +89,9 @@ class _CustomFormState extends State<CustomForm> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Home(name: name,),
+                              builder: (context) => SafeArea(
+                                child: Home(name, widget.data),
+                              ),
                             ),
                           );
                         }
