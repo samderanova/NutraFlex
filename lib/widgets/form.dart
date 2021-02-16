@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import './home.dart';
 
 class CustomForm extends StatefulWidget {
@@ -20,6 +21,18 @@ class _CustomFormState extends State<CustomForm> {
         prefs.setString('name', name);
       });
     });
+  }
+
+  Future addUser(double height, double weight) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    return users
+        .add({
+          'name': name,
+          'height': height,
+          'weight': weight,
+        })
+        .then((value) => print('User added!'))
+        .catchError((error) => print('Error: $error'));
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -86,6 +99,10 @@ class _CustomFormState extends State<CustomForm> {
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           _setName();
+                          addUser(
+                            double.parse(weightController.text),
+                            double.parse(heightController.text),
+                          );
                           Navigator.push(
                             context,
                             MaterialPageRoute(

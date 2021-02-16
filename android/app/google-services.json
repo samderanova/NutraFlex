@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "790300858707",
+    "project_id": "nutraflex-2a577",
+    "storage_bucket": "nutraflex-2a577.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790300858707:android:53eb921cbf1aecddbd29a6",
+        "android_client_info": {
+          "package_name": "com.example.NutraFlex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790300858707-6m9kt3bmptv6dusisfvjblh19rc2ug4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIlUUDzdK31zpgY6SCZJiJxjcgJvALYhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790300858707-6m9kt3bmptv6dusisfvjblh19rc2ug4o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

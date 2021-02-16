@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future futureQuote;
+  double _currentSliderValue = 1;
 
   @override
   // Initialize the state by fetching a quote from the API
@@ -112,7 +113,28 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
                 return CircularProgressIndicator();
-              })
+              }),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              children: [
+                Text('Control the tension of your bow with the slider'),
+                Slider(
+                  value: _currentSliderValue,
+                  min: 1,
+                  max: 5,
+                  divisions: 4,
+                  label: _currentSliderValue.toString(),
+                  onChanged: (double value) {
+                    setState(() {
+                      _currentSliderValue = value;
+                    });
+                  },
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          )
         ],
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
