@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         prefs.clear();
       });
     });
-    Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false);
+    Navigator.pushNamedAndRemoveUntil(context, '/welcome', (r) => false);
   }
 
   @override
