@@ -8,7 +8,8 @@
 .buildlog/
 .history
 .svn/
-lib/models/env
+.gitignore
+lib/models/.env
 
 # IntelliJ related
 *.iml
