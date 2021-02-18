@@ -173,7 +173,14 @@ class _CustomFormState extends State<CustomForm> {
                         'Clear',
                         style: TextStyle(fontSize: 20),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        nameController.clear();
+                        emailController.clear();
+                        createPasswordController.clear();
+                        confirmPasswordController.clear();
+                        heightController.clear();
+                        weightController.clear();
+                      },
                     ),
                     RaisedButton(
                       child: Text(

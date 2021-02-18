@@ -81,7 +81,10 @@ class _LoginFormState extends State<LoginForm> {
                         'Clear',
                         style: TextStyle(color: Colors.green, fontSize: 20),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        emailController.clear();
+                        passwordController.clear();
+                      },
                     ),
                     RaisedButton(
                       child: Text('Submit', style: TextStyle(fontSize: 20)),
