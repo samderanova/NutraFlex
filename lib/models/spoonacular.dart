@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:dotenv/dotenv.dart'; // for environment variables
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 const baseUrl = 'api.spoonacular.com';
 const wantedNutritionFacts = [
@@ -24,9 +24,9 @@ const exclude = 'shellfish';
 
 // Makes request to generate meal plan
 Future<MealPlan> fetchMealPlan() async {
-  load(); // load variables from .env
+  await DotEnv.load(); // load variables from .env
   final response = await http.get(Uri.https(baseUrl, 'mealplanner/generate', {
-    'apiKey': env['MY_API_KEY'],
+    'apiKey': DotEnv.env['MY_API_KEY'],
     'timeFrame': timeFrame,
     'targetCalories': calories,
     'diet': diet,
@@ -48,10 +48,10 @@ Future<MealPlan> fetchMealPlan() async {
 
 // Makes request to get individual meal data
 Future<Meal> fetchMealInfo(int mealId) async {
-  load(); // load variables from .env
+  await DotEnv.load(); // load variables from .env
   final response =
       await http.get(Uri.https(baseUrl, 'recipes/$mealId/information', {
-    'apiKey': env['MY_API_KEY'],
+    'apiKey': DotEnv.env['MY_API_KEY'],
     'includeNutrition': 'True',
   }));
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './workouts.dart';
 import './homePage.dart';
+import './nutrition.dart';
 
 class Home extends StatefulWidget {
   final String name;
@@ -25,7 +26,7 @@ class _HomeState extends State<Home> {
     */
     Workouts(),
     '',
-    Text('Nutrition'),
+    Nutrition(),
   ];
 
   void _tap(int index) {
