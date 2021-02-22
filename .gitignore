@@ -9,7 +9,7 @@
 .history
 .svn/
 .gitignore
-lib/models/.env
+.env
 
 # IntelliJ related
 *.iml
