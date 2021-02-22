@@ -19,7 +19,7 @@ const wantedNutritionFacts = [
 // Sample Nutrition Input for Meal Plan
 const timeFrame = 'day';
 const calories = '2000';
-const diet = 'Vegetarian';
+const diet = 'Keto';
 const exclude = 'shellfish';
 
 // Makes request to generate meal plan

@@ -19,7 +19,7 @@ Once we have imported both, we can finally start making requests!
 Future fetchQuote() async {
   // This async await part is like the promises Riley worked on for the backend
   final response = await http.get('https://zenquotes.io/api/random');
-
+  // print(response.body);
   if (response.statusCode == 200) {
     // Return an instance from the Quote class
     return Quote.fromJson(jsonDecode(response.body)[0]);
@@ -37,7 +37,8 @@ class Quote {
   // Constructor for Quote class (specifically from JSON)
   factory Quote.fromJson(Map<String, dynamic> json) {
     if (json['q'].startsWith('Too many requests')) {
-      throw Exception("Woah! We can't generate quotes for you this quickly. Please slow down.");
+      throw Exception(
+          "Woah! We can't generate quotes for you this quickly. Please slow down.");
     }
     return Quote(
       quoteText: json['q'],

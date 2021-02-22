@@ -160,7 +160,48 @@ class _CustomFormState extends State<CustomForm> {
                     dietChoice = value;
                   });
                 },
-              )
+              ),
+              RadioListTile(
+                title: Text('Keto', style: TextStyle(fontSize: 19)),
+                value: 'Keto',
+                groupValue: dietChoice,
+                onChanged: (String value) {
+                  setState(() {
+                    dietChoice = value;
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text('High Protein', style: TextStyle(fontSize: 19)),
+                value: 'High Protein',
+                groupValue: dietChoice,
+                onChanged: (String value) {
+                  setState(() {
+                    dietChoice = value;
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text('Gluten Free', style: TextStyle(fontSize: 19)),
+                value: 'Gluten Free',
+                groupValue: dietChoice,
+                onChanged: (String value) {
+                  setState(() {
+                    dietChoice = value;
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text('Pescetarian', style: TextStyle(fontSize: 19)),
+                value: 'High Protein',
+                groupValue: dietChoice,
+                onChanged: (String value) {
+                  setState(() {
+                    dietChoice = value;
+                  });
+                },
+              ),
+
             ],
           ),
           Row(
