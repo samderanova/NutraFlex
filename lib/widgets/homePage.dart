@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/quote.dart';
+import './welcome.dart';
+import './barchart.dart';
 
 class HomePage extends StatefulWidget {
   final String name;
@@ -22,121 +24,122 @@ class _HomePageState extends State<HomePage> {
     futureQuote = fetchQuote();
   }
 
-  _logOut() async {
+  void _logOut() {
     setState(() {
       widget.data.then((SharedPreferences prefs) {
         prefs.clear();
       });
     });
-    Navigator.pushNamedAndRemoveUntil(context, '/welcome', (r) => false);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SafeArea(child: Welcome(data: widget.data))));
+    // Navigator.pushNamedAndRemoveUntil(context, '/welcome', (r) => false);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: [
-          Row(
+          Column(
             children: [
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  'Hello, ${widget.name}!',
-                  style: TextStyle(fontSize: 30),
-                ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'Hello, ${widget.name}!',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20),
+                    child: RaisedButton(
+                      child: Text('Log Out'),
+                      onPressed: _logOut,
+                    ),
+                  )
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: RaisedButton(
-                  child: Text('Log Out'),
-                  onPressed: _logOut,
-                ),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ),
 
-          // The Future object we got from fetching a quote is "built" here.
-          FutureBuilder(
-              future: futureQuote,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: [
-                      Text(
-                        "Here's an inspirational quote just for you!",
-                        style: TextStyle(fontSize: 20),
-                        textAlign: TextAlign.left,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
+              // The Future object we got from fetching a quote is "built" here.
+              FutureBuilder(
+                  future: futureQuote,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          Container(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: Text(
+                                    snapshot.data.quoteText,
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '- ${snapshot.data.author}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            margin: EdgeInsets.all(15),
+                          )
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Padding(
+                        padding: EdgeInsets.all(15),
+                        child: Center(
+                          child: Text(
+                            snapshot.error.toString().substring(11),
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(15),
-                              child: Text(
-                                snapshot.data.quoteText,
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              '- ${snapshot.data.author}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Center(
-                      child: Text(
-                        snapshot.error.toString().substring(11),
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                return CircularProgressIndicator();
-              }),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              children: [
-                Text('Control the tension of your bow with the slider'),
-                Slider(
-                  value: _currentSliderValue,
-                  min: 1,
-                  max: 5,
-                  divisions: 4,
-                  label: _currentSliderValue.toString(),
-                  onChanged: (double value) {
-                    setState(() {
-                      _currentSliderValue = value;
-                    });
-                  },
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  }),
+              Container(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: BarChart.withSampleData(),
                 ),
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ),
-          )
+                margin: EdgeInsets.all(20),
+              ),
+              Column(
+                children: [
+                  Text('Control the tension of your bow with the slider'),
+                  Slider(
+                    value: _currentSliderValue,
+                    min: 1,
+                    max: 5,
+                    divisions: 4,
+                    label: _currentSliderValue.toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+          ),
         ],
-        crossAxisAlignment: CrossAxisAlignment.center,
       ),
     );
   }

@@ -18,28 +18,24 @@ class _LoginFormState extends State<LoginForm> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  bool _checkCredentials(String email, String password) {
-    var correctCredentials = false;
-    FirebaseFirestore.instance
+  Future _checkCredentials(String email, String password) async {
+    var successful = await FirebaseFirestore.instance
         .collection('users')
         .get()
-        .then((QuerySnapshot querySnapshot) => {
-              querySnapshot.docs.forEach((doc) {
-                if (doc["email"] == email && doc["password"] == password) {
-                  correctCredentials = true;
-                }
-              })
-            });
-    if (correctCredentials) {
-      return true;
-    }
-    return false;
+        .then((QuerySnapshot querySnapshot) => querySnapshot);
+    var correctCredential = [];
+    successful.docs.forEach((doc) {
+      if (email == doc["email"] && password == doc["password"]) {
+        correctCredential.add(doc["name"]);
+      }
+    });
+    return correctCredential;
   }
 
-  _setName(String email) async {
+  _setName(String userName) async {
     setState(() {
       widget.data.then((SharedPreferences prefs) {
-        prefs.setString('name', name);
+        prefs.setString('name', userName);
       });
     });
   }
@@ -63,6 +59,7 @@ class _LoginFormState extends State<LoginForm> {
           TextFormField(
             controller: passwordController,
             decoration: InputDecoration(labelText: 'Password'),
+            obscureText: true,
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please provide a password!';
@@ -88,20 +85,19 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     RaisedButton(
                       child: Text('Submit', style: TextStyle(fontSize: 20)),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
-                          if (!_checkCredentials(
-                            emailController.text,
-                            passwordController.text,
-                          )) {
+                          var response = await _checkCredentials(
+                              emailController.text, passwordController.text);
+                          if (response.isEmpty) {
                             return Text('Incorrect email/password');
                           } else {
-                            _setName(emailController.text);
+                            _setName(response[0]);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    HomePage(name: name, data: widget.data),
+                                builder: (context) => HomePage(
+                                    name: response[0], data: widget.data),
                               ),
                             );
                           }

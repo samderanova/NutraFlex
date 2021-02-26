@@ -193,7 +193,7 @@ class _CustomFormState extends State<CustomForm> {
               ),
               RadioListTile(
                 title: Text('Pescetarian', style: TextStyle(fontSize: 19)),
-                value: 'High Protein',
+                value: 'Pescetarian',
                 groupValue: dietChoice,
                 onChanged: (String value) {
                   setState(() {
@@ -201,7 +201,6 @@ class _CustomFormState extends State<CustomForm> {
                   });
                 },
               ),
-
             ],
           ),
           Row(
